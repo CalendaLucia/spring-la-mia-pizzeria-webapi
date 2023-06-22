@@ -12,17 +12,32 @@
     <div id="carouselExampleCaptions" class="carousel slide">
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
-                    aria-current="true" aria-label="Slide 1"></button>
+                    aria-current="true" aria-label="Slide 1">
+            </button>
             <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
-                    aria-label="Slide 2"></button>
+                    aria-label="Slide 2">
+            </button>
             <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
-                    aria-label="Slide 3"></button>
+                    aria-label="Slide 3">
+            </button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3"
+                    aria-label="Slide 3">
+            </button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="4"
+                    aria-label="Slide 3">
+            </button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="5"
+                    aria-label="Slide 3">
+            </button>
         </div>
-        <div class="carousel-inner">
-            <div th:each="pizza, iterStat : ${pizzas}" class="carousel-item"
-                 th:classappend="${iterStat.index == 0} ? 'active'">
-                <img th:src="${pizza.photo}" class="d-block w-100 image-fluid">
-                <div class="carousel-caption d-none d-md-block">
+
+        <div class="carousel-inner position-relative z-1">
+            <div class="w-100 h-100 bg-dark opacity-90 z-3 position-absolute p-5 rounded-3"></div>
+            <div th:each="pizza, current : ${pizzas}" class="carousel-item"
+                 th:classappend="${current.index == 0} ? 'active'">
+                <!-- La condizione "current.index == 0" verifica se l'elemento corrente è il primo dell'iterazione. -->
+                <img th:src="${pizza.photo}" class="d-block w-100 image-fluid" alt="pizza">
+                <div class="carousel-caption d-none d-md-block" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);">
                     <h5 th:text="${pizza.name}"></h5>
                     <p th:text="${pizza.description}"></p>
                     <p th:text="${pizza.price}"></p>
@@ -40,7 +55,13 @@
             <span class="visually-hidden">Next</span>
         </button>
     </div>
+
 </div>
+
+<div th:if="${message}" class="text-danger text-center">
+    <p th:text="${message}"></p>
+</div>
+
 
 </body>
 </html>

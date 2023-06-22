@@ -23,6 +23,9 @@ public class PizzaController {
 
         // recupero la lista delle pizze dal database
         List<Pizza> pizzas = pizzaRepository.findAll();
+        if (pizzas.isEmpty()) {
+            model.addAttribute("message", "Non ci sono pizze nel nostro catalogo");
+        }
         // passo la lista delle pizze alla view
         model.addAttribute("pizzas", pizzas);
         return "pizzas/our-pizzas";
