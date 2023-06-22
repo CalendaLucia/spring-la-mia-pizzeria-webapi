@@ -1,0 +1,1 @@
+INSERT INTO `pizzas`(`price`, `created_at`, `description`, `name`, `photo`)VALUES (5.00, '2023-06-22 15:28', 'Classic pizza with tomato, mozzarella, and basil', 'Pizza Margherita', 'https://www.napolitoday.it/~media/horizontal-hi/59187489013853/pizza-14-13.jpg');
