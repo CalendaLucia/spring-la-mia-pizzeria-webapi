@@ -1,9 +1,46 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <head th:insert="~{/fragments/fragments :: head(pageTitle='Our pizzas')}">
-    </head>
+
+<head th:insert="~{/fragments/fragments :: head(pageTitle='Our pizzas')}">
+
+</head>
 <body>
-<h1>Ciao</h1>
+<div class="container-fluid">
+    <h1 class="text-danger text-center">Our Pizzas</h1>
+</div>
+<div class="container w-50 mt-5">
+    <div id="carouselExampleCaptions" class="carousel slide">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+                    aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+                    aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div th:each="pizza, iterStat : ${pizzas}" class="carousel-item"
+                 th:classappend="${iterStat.index == 0} ? 'active'">
+                <img th:src="${pizza.photo}" class="d-block w-100 image-fluid">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5 th:text="${pizza.name}"></h5>
+                    <p th:text="${pizza.description}"></p>
+                    <p th:text="${pizza.price}"></p>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+                data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+                data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+
 </body>
 </html>
