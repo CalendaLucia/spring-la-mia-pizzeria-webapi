@@ -3,14 +3,23 @@
 <head th:insert="~{/fragments/fragments :: head(pageTitle='Our pizzas')}">
 </head>
 <body>
-<div th:object="${pizza}" class="card" style="width: 18rem;">
-    <img th:src="*{photo}" class="card-img-top">
-    <div class="card-body">
-        <p th:text="*{name}" class="card-text"></p>
-        <p th:text="*{description}" class="card-text"></p>
-        <p th:text="*{'Price: ' + price + ' €'}" class="card-text"></p>
+<div class="container p-3">
+    <h2 class="text-danger">
+        Ours <span th:text="${pizza.getName}"></span>
+    </h2>
+</div>
+<div class="container p-2">
+    <div th:object="${pizza}" class="card" style="width: 18rem;">
+        <img th:src="*{photo}" class="card-img-top">
+        <div class="card-body">
+            <p th:text="*{name}" class="card-text"></p>
+            <p th:text="*{'Ingredients: ' + description}" class="card-text"></p>
+            <p th:text="*{'Price: ' + price + ' €'}" class="card-text"></p>
+        </div>
     </div>
 </div>
+
+<div th:replace="fragments/fragments :: return-home"></div>
 
 
 </body>

@@ -9,22 +9,6 @@
 
 <nav th:replace="~{/fragments/fragments :: navbar(current='our-pizzas')}"></nav>
 
-<div class="container-fluid">
-    <h1 class="text-danger text-center">Papa's Pizza</h1>
-</div>
-
-<!-- form di ricerca -->
-<div>
-    <form th:action="@{/papas}" method="GET">
-        <div class="input-group">
-            <input type="search" class="form-control" placeholder="Search by name or ingredients"
-                   name="keyword" th:value="${searchInput}">
-            <button class="btn btn-outline-secondary" type="submit">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </button>
-        </div>
-    </form>
-</div>
 
 <!--MESSAGGIO DI ERRORE IN CASO DI DATABASE VUOTO -->
 <div th:if="${message}" class="text-danger text-center">
