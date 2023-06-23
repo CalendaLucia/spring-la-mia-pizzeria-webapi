@@ -8,6 +8,13 @@
 <div class="container-fluid">
     <h1 class="text-danger text-center">Our Pizzas</h1>
 </div>
+
+<!--MESSAGGIO DI ERRORE IN CASO DI DATABASE VUOTO -->
+<div th:if="${message}" class="text-danger text-center">
+    <p th:text="${message}"></p>
+</div>
+
+<!--INIZIO SLIDER CHE MOSTRA LA LISTA DELLE PIZZE DISPONIBILI -->
 <div class="container w-50 mt-5">
     <div id="carouselExampleCaptions" class="carousel slide">
         <div class="carousel-indicators">
@@ -32,15 +39,20 @@
         </div>
 
         <div class="carousel-inner position-relative z-1">
+            <!--Overlay per rendere nome e descrizione più leggibili-->
             <div class="w-100 h-100 bg-dark opacity-90 z-3 position-absolute p-5 rounded-3"></div>
+            <!--Qui parte il codice che si ripete-->
             <div th:each="pizza, current : ${pizzas}" class="carousel-item"
                  th:classappend="${current.index == 0} ? 'active'">
-                <!-- La condizione "current.index == 0" verifica se l'elemento corrente è il primo dell'iterazione. -->
-                <img th:src="${pizza.photo}" class="d-block w-100 image-fluid" alt="pizza">
+                <!-- La condizione "current.index == 0" verifica se l'elemento corrente è il primo dell'iterazione. Index è una varibile di stato -->
+                <img th:src="${pizza.photo}" class="d-block w-100 img-fluid" alt="pizza">
                 <div class="carousel-caption d-none d-md-block" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);">
-                    <h5 th:text="${pizza.name}"></h5>
-                    <p th:text="${pizza.description}"></p>
-                    <p th:text="${pizza.price}"></p>
+                    <span th:text="${pizza.name}"></span>
+                    <span>
+                         <a th:href="@{|/papas/${pizza.id}|}">
+                            <i class="fa-solid fa-pizza-slice text-white"></i>
+                        </a>
+                   </span>
                 </div>
             </div>
         </div>
@@ -55,13 +67,6 @@
             <span class="visually-hidden">Next</span>
         </button>
     </div>
-
 </div>
-
-<div th:if="${message}" class="text-danger text-center">
-    <p th:text="${message}"></p>
-</div>
-
-
 </body>
 </html>
