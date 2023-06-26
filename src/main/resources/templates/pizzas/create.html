@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="~{/fragments/fragments :: head(pageTitle='Our pizzas')}">
+
+</head>
+<body>
+<nav th:replace="~{/fragments/fragments :: navbar(current='create')}"></nav>
+<h2>
+    Add a new Pizza
+</h2>
+
+<div class="container">
+    <form class="row g-3 needs-validation" novalidate th:action="@{/papas/create}" th:object="${pizza}" method="post"
+          id="pizza-form">
+        <div class="col-md-4">
+            <label for="pizza-name" class="form-label">Pizza's Name</label>
+            <input type="text" class="form-control" id="pizza-name" th:field="*{name}" required>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+            <div class="invalid-feedback">
+                Please provide a name
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <label for="photo" class="form-label">Add a pizza's photo (url)</label>
+            <input type="url" class="form-control" id="photo" th:field="*{photo}" required>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+            <div class="invalid-feedback">
+                Please provide a valid URL.
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <label for="price" class="form-label">Price</label>
+            <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input type="text" class="form-control" id="price" th:field="*{price}" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+                <div class="invalid-feedback">
+                    Please provide a valid price.
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" required th:field="*{description}"> </textarea>
+            <div class="invalid-feedback">
+                Please provide a valid description.
+            </div>
+        </div>
+
+
+        <div class="col-12">
+            <button class="btn btn-primary" type="submit">Submit form</button>
+        </div>
+    </form>
+</div>
+
+
+</body>
+</html>

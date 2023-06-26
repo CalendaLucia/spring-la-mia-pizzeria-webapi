@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -55,9 +52,28 @@ public class PizzaController {
         } else {
             //ritorno un HTTP Status 404 Not Found
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pizza" + pizzaId + "not found");
+            //devi fare la pagina di errore in html
         }
 
+    }
 
+    //Controller che gestisce la creazione del form per l'inserimento di una nuova pizza
+
+    @GetMapping("/create")
+    public String create(Model model) {
+        //aggiungo al model l'attributo pizza contenente una Pizza vuota
+        model.addAttribute("pizza", new Pizza());
+        return "/pizzas/create"; //template con form di creazione pizza
+    }
+
+    //Controller che gestisce la post del form coi dati della nuova Pizza
+
+    @PostMapping("/create")
+    public String store(@ModelAttribute("pizza") Pizza formPizza) {
+
+        pizzaRepository.save(formPizza);
+
+        return "redirect:/papas";
     }
 
 }

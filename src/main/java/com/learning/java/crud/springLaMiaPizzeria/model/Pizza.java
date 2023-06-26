@@ -1,6 +1,7 @@
 package com.learning.java.crud.springLaMiaPizzeria.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ public class Pizza {
     @GeneratedValue(strategy = GenerationType.IDENTITY)     // vanno scritte insieme a @id
     private Integer id;
     @Column(nullable = false)
+    @NotBlank
     private String name;
     private String description;
     private String photo;
@@ -20,9 +22,10 @@ public class Pizza {
     private BigDecimal price;
     private LocalDateTime createdAt;
 
-    public Pizza() {
+    public Pizza() {    //costruttore vuoto
     }
 
+    //getter e setter
     public Integer getId() {
         return id;
     }
