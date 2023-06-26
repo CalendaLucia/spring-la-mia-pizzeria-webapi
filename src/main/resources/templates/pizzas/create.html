@@ -9,20 +9,12 @@
 <h2>
     Add a new Pizza
 </h2>
-
 <div class="container">
-    <form
-            th:action="@{/papas/create}"
-            th:object="${pizza}"
-            method="post"
-            id="pizza-form"
-            class="row"
-    >
-
-        <div class="col-md-4">
-            <label for="pizza-name" class="form-label">Pizza's Name</label>
+    <form th:action="@{/papas/create}" th:object="${pizza}" method="post" id="pizza-form" class="row">
+        <div class="col-6">
+            <label class="form-label" for="pizza-name">Name</label>
             <input class="form-control" type="text" id="pizza-name" th:field="*{name}"
-                   th:errorClass="is-invalid">
+                   th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''">
             <div class="form-text">Name must not be blank</div>
             <div th:if="${#fields.hasErrors('name')}" class="invalid-feedback">
                 <ul>
@@ -30,12 +22,11 @@
                 </ul>
             </div>
         </div>
-
-        <div class="col-md-4">
-            <label for="photo" class="form-label">Add a pizza's photo (url)</label>
-            <input type="url" class="form-control" id="photo" th:field="*{photo}"
-                   th:errorClass="is-invalid">
-            <div class="form-text">Photo must not be blank</div>
+        <div class="col-6">
+            <label class="form-label" for="photo">Photo</label>
+            <input class="form-control" type="text" id="photo" th:field="*{photo}"
+                   th:classappend="${#fields.hasErrors('photo')} ? 'is-invalid' : ''">
+            <div class="form-text">Photo is required.</div>
             <div th:if="${#fields.hasErrors('photo')}" class="invalid-feedback">
                 <ul>
                     <li th:each="err : ${#fields.errors('photo')}" th:text="${err}"></li>
@@ -43,31 +34,31 @@
             </div>
         </div>
 
-        <div class="col-md-4">
-            <label for="price" class="form-label">Price</label>
-            <div class="input-group">
-                <span class="input-group-text">$</span>
-                <input type="text" class="form-control" id="price" th:field="*{price}"
-                       th:errorclass="is-invalid">
-                <div class="form-text">Price must not be blank</div>
-                <div th:if="${#fields.hasErrors('price')}" class="invalid-feedback">
-                    <ul>
-                        <li th:each="err : ${#fields.errors('price')}" th:text="${err}"></li>
-                    </ul>
-                </div>
+        <div class="col-6">
+            <label class="form-label" for="price">Price</label>
+            <input class="form-control" type="text" id="price" th:field="*{price}"
+                   th:classappend="${#fields.hasErrors('price')} ? 'is-invalid' : ''">
+            <div class="form-text">Price must be a positive number.</div>
+            <div th:if="${#fields.hasErrors('price')}" class="invalid-feedback">
+                <ul>
+                    <li th:each="err : ${#fields.errors('price')}" th:text="${err}"></li>
+                </ul>
             </div>
         </div>
-
-        <div class="col-md-6">
-            <label for="description" class="form-label">Description</label>
-            <textarea class="form-control" id="description" required th:field="*{description}"> </textarea>
-            <div class="invalid-feedback">
-                Please provide a valid description.
-            </div>
-        </div>
-
 
         <div class="col-12">
+            <label class="form-label" for="description">Description</label>
+            <textarea class="form-control" id="description" th:field="*{description}" rows="5"
+                      th:classappend="${#fields.hasErrors('description')} ? 'is-invalid' : ''"></textarea>
+            <div class="form-text">Description is required.</div>
+            <div th:if="${#fields.hasErrors('description')}" class="invalid-feedback">
+                <ul>
+                    <li th:each="err : ${#fields.errors('description')}" th:text="${err}"></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-12 mt-3">
             <button class="btn btn-primary" type="submit">Save</button>
             <a class="btn btn-primary" th:href="@{/papas}">Cancel</a>
         </div>

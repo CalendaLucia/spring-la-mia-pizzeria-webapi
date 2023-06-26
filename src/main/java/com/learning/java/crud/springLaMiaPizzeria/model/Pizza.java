@@ -1,6 +1,7 @@
 package com.learning.java.crud.springLaMiaPizzeria.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
@@ -16,17 +17,21 @@ public class Pizza {
     @GeneratedValue(strategy = GenerationType.IDENTITY)     // vanno scritte insieme a @id
     private Integer id;
     @Column(nullable = false)
-    @NotBlank
+    @NotBlank(message = "Name must not be blank")
     @Size(max = 100)
     private String name;
-    @NotBlank
+
+    @Column(length = 500) // Imposta la lunghezza massima della colonna a 500 caratteri
+    @NotBlank(message = "Description is required. Max lenght = 500")
     private String description;
-    @NotBlank
+    @NotBlank(message = "Photo is required")
     private String photo;
-    @Column(nullable = false)
-    @NotBlank
-    @Positive
+
+
+    @Positive(message = "Price must be a positive number.")
+    @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than 0.")
     private BigDecimal price;
+
     private LocalDateTime createdAt;
 
     public Pizza() {    //costruttore vuoto

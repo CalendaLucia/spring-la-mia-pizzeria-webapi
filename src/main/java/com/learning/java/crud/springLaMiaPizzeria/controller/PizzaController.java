@@ -72,7 +72,10 @@ public class PizzaController {
     //Controller che gestisce la post del form coi dati della nuova Pizza
 
     @PostMapping("/create")
-    public String store(@Valid @ModelAttribute("pizza") Pizza formPizza, BindingResult bindingResult) {
+    public String store(
+            @Valid @ModelAttribute("pizza") Pizza formPizza,
+            BindingResult bindingResult,
+            Model model) {
         //i dati della pizza sono in formPizza
 
         //verifico se ci sono stati degli errori
@@ -80,7 +83,7 @@ public class PizzaController {
             //se ci sono stati errori allora
             return "/pizzas/create"; //ritorno il tamplate del form ma con la pizza precaricata
         }
-        
+
         //gestisco il timestamp di creazione
         formPizza.setCreatedAt(LocalDateTime.now());
 
