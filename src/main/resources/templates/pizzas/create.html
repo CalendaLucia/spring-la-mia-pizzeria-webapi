@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:insert="~{/fragments/fragments :: head(pageTitle='Our pizzas')}">
+<head th:insert="~{/fragments/fragments :: head(pageTitle='Add a new Pizza')}">
 
 </head>
 <body>
@@ -11,27 +11,35 @@
 </h2>
 
 <div class="container">
-    <form class="row g-3 needs-validation" novalidate th:action="@{/papas/create}" th:object="${pizza}" method="post"
-          id="pizza-form">
+    <form
+            th:action="@{/papas/create}"
+            th:object="${pizza}"
+            method="post"
+            id="pizza-form"
+            class="row"
+    >
+
         <div class="col-md-4">
             <label for="pizza-name" class="form-label">Pizza's Name</label>
-            <input type="text" class="form-control" id="pizza-name" th:field="*{name}" required>
-            <div class="valid-feedback">
-                Looks good!
-            </div>
-            <div class="invalid-feedback">
-                Please provide a name
+            <input class="form-control" type="text" id="pizza-name" th:field="*{name}"
+                   th:errorClass="is-invalid">
+            <div class="form-text">Name must not be blank</div>
+            <div th:if="${#fields.hasErrors('name')}" class="invalid-feedback">
+                <ul>
+                    <li th:each="err : ${#fields.errors('name')}" th:text="${err}"></li>
+                </ul>
             </div>
         </div>
 
         <div class="col-md-4">
             <label for="photo" class="form-label">Add a pizza's photo (url)</label>
-            <input type="url" class="form-control" id="photo" th:field="*{photo}" required>
-            <div class="valid-feedback">
-                Looks good!
-            </div>
-            <div class="invalid-feedback">
-                Please provide a valid URL.
+            <input type="url" class="form-control" id="photo" th:field="*{photo}"
+                   th:errorClass="is-invalid">
+            <div class="form-text">Photo must not be blank</div>
+            <div th:if="${#fields.hasErrors('photo')}" class="invalid-feedback">
+                <ul>
+                    <li th:each="err : ${#fields.errors('photo')}" th:text="${err}"></li>
+                </ul>
             </div>
         </div>
 
@@ -39,12 +47,13 @@
             <label for="price" class="form-label">Price</label>
             <div class="input-group">
                 <span class="input-group-text">$</span>
-                <input type="text" class="form-control" id="price" th:field="*{price}" required>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
-                <div class="invalid-feedback">
-                    Please provide a valid price.
+                <input type="text" class="form-control" id="price" th:field="*{price}"
+                       th:errorclass="is-invalid">
+                <div class="form-text">Price must not be blank</div>
+                <div th:if="${#fields.hasErrors('price')}" class="invalid-feedback">
+                    <ul>
+                        <li th:each="err : ${#fields.errors('price')}" th:text="${err}"></li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -59,7 +68,8 @@
 
 
         <div class="col-12">
-            <button class="btn btn-primary" type="submit">Submit form</button>
+            <button class="btn btn-primary" type="submit">Save</button>
+            <a class="btn btn-primary" th:href="@{/papas}">Cancel</a>
         </div>
     </form>
 </div>

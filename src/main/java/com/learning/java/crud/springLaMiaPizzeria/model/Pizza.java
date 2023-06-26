@@ -2,6 +2,8 @@ package com.learning.java.crud.springLaMiaPizzeria.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -15,10 +17,15 @@ public class Pizza {
     private Integer id;
     @Column(nullable = false)
     @NotBlank
+    @Size(max = 100)
     private String name;
+    @NotBlank
     private String description;
+    @NotBlank
     private String photo;
     @Column(nullable = false)
+    @NotBlank
+    @Positive
     private BigDecimal price;
     private LocalDateTime createdAt;
 

@@ -2,13 +2,16 @@ package com.learning.java.crud.springLaMiaPizzeria.controller;
 
 import com.learning.java.crud.springLaMiaPizzeria.model.Pizza;
 import com.learning.java.crud.springLaMiaPizzeria.repository.PizzaRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,9 +72,19 @@ public class PizzaController {
     //Controller che gestisce la post del form coi dati della nuova Pizza
 
     @PostMapping("/create")
-    public String store(@ModelAttribute("pizza") Pizza formPizza) {
+    public String store(@Valid @ModelAttribute("pizza") Pizza formPizza, BindingResult bindingResult) {
+        //i dati della pizza sono in formPizza
 
-        pizzaRepository.save(formPizza);
+        //verifico se ci sono stati degli errori
+        if (bindingResult.hasErrors()) {
+            //se ci sono stati errori allora
+            return "/pizzas/create"; //ritorno il tamplate del form ma con la pizza precaricata
+        }
+        
+        //gestisco il timestamp di creazione
+        formPizza.setCreatedAt(LocalDateTime.now());
+
+        pizzaRepository.save(formPizza); //il metodo save fa una create sql se l'oggetto con quella PK non esiste, altrimenti fa update
 
         return "redirect:/papas";
     }
