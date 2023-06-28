@@ -1,11 +1,8 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:insert="~{/fragments/fragments :: head(pageTitle='Our pizzas')}">
-
-</head>
+<head th:insert="~{/fragments/fragments :: head(pageTitle='Our pizzas')}"></head>
 <body>
-
 
 <nav th:replace="~{/fragments/fragments :: navbar(current='our-pizzas')}"></nav>
 
@@ -48,15 +45,22 @@
                 <!-- La condizione "current.index == 0" verifica se l'elemento corrente è il primo dell'iterazione. Index è una varibile di stato -->
                 <img th:src="${pizza.photo}" class="d-block w-100 img-fluid" alt="pizza">
                 <div class="carousel-caption d-none d-md-block" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);">
-                    <span th:text="${pizza.name}"></span>
+                    <h3 th:text="${pizza.name}"></h3>
                     <span>
                          <a th:href="@{|/papas/${pizza.id}|}">
-                            <i class="fa-solid fa-pizza-slice text-white"></i>
-                        </a>
-                   </span>
+                            <i class="fa-solid fa-pizza-slice text-white h3 p-2"></i>
+                         </a>
+                    </span>
+                    <span>
+                         <a th:href="@{|/papas/edit/${pizza.id}|}">
+                             <i class="fa-regular fa-pen-to-square text-white h3 p-2"></i>
+                         </a>
+                    </span>
+
                 </div>
             </div>
         </div>
+
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
                 data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -68,6 +72,7 @@
             <span class="visually-hidden">Next</span>
         </button>
     </div>
+
 </div>
 </body>
 </html>

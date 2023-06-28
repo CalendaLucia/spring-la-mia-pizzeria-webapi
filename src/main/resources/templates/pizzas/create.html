@@ -1,16 +1,20 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-<head th:insert="~{/fragments/fragments :: head(pageTitle='Add a new Pizza')}">
-
+<head th:insert="~{/fragments/fragments :: head}"
+      th:with="pageTitle=${pizza.id == null ? 'Add a new Pizza' : 'Edit Pizza'}">
+    <title th:text="${pageTitle}"></title>
 </head>
+
 <body>
 <nav th:replace="~{/fragments/fragments :: navbar(current='create')}"></nav>
-<h2>
-    Add a new Pizza
-</h2>
-<div class="container">
-    <form th:action="@{/papas/create}" th:object="${pizza}" method="post" id="pizza-form" class="row">
+
+<div class="container w-75">
+    <h2 th:text="${pizza.id == null ? 'Add a new Pizza' : 'Edit Pizza'}" class="text-danger p-2"></h2>
+</div>
+
+<div class="container w-75">
+    <form th:action="@{${pizza.id == null ? '/papas/create' : '/papas/edit/' + pizza.id}}" method="post"
+          th:object="${pizza}" id="pizza-form" class="row">
         <div class="col-6">
             <label class="form-label" for="pizza-name">Name</label>
             <input class="form-control" type="text" id="pizza-name" th:field="*{name}"

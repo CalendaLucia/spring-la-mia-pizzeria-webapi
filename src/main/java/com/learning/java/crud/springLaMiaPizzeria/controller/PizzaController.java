@@ -66,7 +66,7 @@ public class PizzaController {
     public String create(Model model) {
         //aggiungo al model l'attributo pizza contenente una Pizza vuota
         model.addAttribute("pizza", new Pizza());
-        return "/pizzas/create"; //template con form di creazione pizza
+        return "pizzas/create"; //template con form di creazione pizza
     }
 
     //Controller che gestisce la post del form coi dati della nuova Pizza
@@ -81,7 +81,7 @@ public class PizzaController {
         //verifico se ci sono stati degli errori
         if (bindingResult.hasErrors()) {
             //se ci sono stati errori allora
-            return "/pizzas/create"; //ritorno il tamplate del form ma con la pizza precaricata
+            return "pizzas/create"; //ritorno il tamplate del form ma con la pizza precaricata
         }
 
         //gestisco il timestamp di creazione
@@ -92,4 +92,24 @@ public class PizzaController {
         return "redirect:/papas";
     }
 
+    //EDIT Controller che gestisce la modifica dei dati del form
+
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable("id") Integer id, Model model) {
+
+        Pizza pizza = getPizzaById(id);
+        model.addAttribute("pizza", pizza);
+
+        return "/pizzas/create";
+    }
+
+
+    //METODO per selezionare l oggetto da database o tirare un eccezione
+    private Pizza getPizzaById(Integer id) {
+        Optional<Pizza> result = pizzaRepository.findById(id);
+        if (result.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pizza " + id + " not found");
+        }
+        return result.get();
+    }
 }
