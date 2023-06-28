@@ -132,6 +132,15 @@ public class PizzaController {
 
     }
 
+    //Controller Delete
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        Pizza pizzaToDelete = getPizzaById(id);
+        pizzaRepository.delete(pizzaToDelete);
+        redirectAttributes.addFlashAttribute("message", new AlertMessage(AlertMessageType.SUCCESS, "Pizza" + pizzaToDelete.getName() + " deleted"));
+        return "redirect:/papas";
+    }
+
 
     //METODO per selezionare l oggetto da database o tirare un eccezione
     private Pizza getPizzaById(Integer id) {
