@@ -1,5 +1,7 @@
 package com.learning.java.crud.springLaMiaPizzeria.controller;
 
+import com.learning.java.crud.springLaMiaPizzeria.messages.AlertMessage;
+import com.learning.java.crud.springLaMiaPizzeria.messages.AlertMessageType;
 import com.learning.java.crud.springLaMiaPizzeria.model.Pizza;
 import com.learning.java.crud.springLaMiaPizzeria.repository.PizzaRepository;
 import jakarta.validation.Valid;
@@ -10,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -101,6 +104,32 @@ public class PizzaController {
         model.addAttribute("pizza", pizza);
 
         return "/pizzas/create";
+    }
+
+    //UPDATE Controller che gestisce la post delle modifiche nel form
+    @PostMapping("/edit/{id}")
+    public String update(@PathVariable Integer id,
+                         @Valid @ModelAttribute("pizza") Pizza formPizza,
+                         BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes) {
+
+        //cerco la pizza per id richiamando il metodo privato getPizzaById
+        Pizza pizzaToEdit = getPizzaById(id);  //vecchia versione della pizza
+
+        if (bindingResult.hasErrors()) {
+            //mando un messaggio di errore
+            redirectAttributes.addFlashAttribute("message", new AlertMessage(AlertMessageType.ERROR, "Sorry, but we couldn't apply the modification"));
+            return "/pizzas/create";
+        }
+
+        //salvo i valori iniziali di creazione per non perderli nella nuova modifica
+        formPizza.setId(pizzaToEdit.getId());
+        formPizza.setCreatedAt(pizzaToEdit.getCreatedAt());
+        pizzaRepository.save(formPizza);
+        //mando una conferma di successo
+        redirectAttributes.addFlashAttribute("message", new AlertMessage(AlertMessageType.SUCCESS, "Pizza updated!"));
+        return "redirect:/papas";
+
     }
 
 
