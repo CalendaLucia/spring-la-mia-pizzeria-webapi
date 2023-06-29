@@ -23,7 +23,7 @@ public class SpecialOffer {
     //relazione
     @ManyToOne
     @JoinColumn(nullable = false)
-    private Pizza pizzaOffer;
+    private Pizza pizza;
 
     public Integer getId() {
         return id;
@@ -57,11 +57,11 @@ public class SpecialOffer {
         this.title = title;
     }
 
-    public Pizza getPizzaOffer() {
-        return pizzaOffer;
+    public Pizza getPizza() {
+        return pizza;
     }
 
-    public void setPizzaOffer(Pizza pizzaOffer) {
-        this.pizzaOffer = pizzaOffer;
+    public void setPizza(Pizza pizza) {
+        this.pizza = pizza;
     }
 }

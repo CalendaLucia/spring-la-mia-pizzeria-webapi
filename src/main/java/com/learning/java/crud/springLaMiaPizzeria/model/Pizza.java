@@ -34,13 +34,14 @@ public class Pizza {
 
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "pizzaOffer", cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "pizza", cascade = {CascadeType.REMOVE})
     private List<SpecialOffer> specialOffers = new ArrayList<>();
 
     public Pizza() {    //costruttore vuoto
     }
 
     //getter e setter
+
     public Integer getId() {
         return id;
     }
@@ -87,5 +88,13 @@ public class Pizza {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<SpecialOffer> getSpecialOffers() {
+        return specialOffers;
+    }
+
+    public void setSpecialOffers(List<SpecialOffer> specialOffers) {
+        this.specialOffers = specialOffers;
     }
 }

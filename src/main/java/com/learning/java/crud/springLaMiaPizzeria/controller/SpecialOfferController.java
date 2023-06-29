@@ -25,18 +25,20 @@ public class SpecialOfferController {
     SpecialOfferRepository specialOfferRepository;
 
     @GetMapping("/create")
-    public String create(@RequestParam("pizzaOfferId") Integer pizzaOfferId, Model model) {
+    public String create(@RequestParam("pizzaId") Integer pizzaId, Model model) {
         // Creo una nuova offerta speciale
         SpecialOffer specialOffer = new SpecialOffer();
         specialOffer.setStartDate(LocalDate.now());
 
-        Optional<Pizza> pizza = pizzaRepository.findById(pizzaOfferId);
+        Optional<Pizza> pizza = pizzaRepository.findById(pizzaId);
 
         if (pizza.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pizza with ID " + pizzaOfferId + " not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pizza with ID " + pizzaId + " not found");
         }
-        specialOffer.setPizzaOffer(pizza.get());
+        specialOffer.setPizza(pizza.get());
+
         model.addAttribute("specialOffer", specialOffer);
+
         return "specialOffer/form";
     }
 
@@ -46,11 +48,12 @@ public class SpecialOfferController {
             return "specialOffer/form";
         }
         specialOfferRepository.save(formSpecialOffer);
-        return "redirect:/papas/" + formSpecialOffer.getPizzaOffer().getId();
+
+        return "redirect:/papas/" + formSpecialOffer.getPizza().getId();
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable Integer id, Model model) {
+    public String edit(@PathVariable("id") Integer id, Model model) {
         Optional<SpecialOffer> specialOffer = specialOfferRepository.findById(id);
         if (specialOffer.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -68,8 +71,22 @@ public class SpecialOfferController {
         }
         formSpecialOffer.setId(id);
         specialOfferRepository.save(formSpecialOffer);
-        return "redirect:/papas/" + formSpecialOffer.getPizzaOffer().getId();
+        return "redirect:/papas/" + formSpecialOffer.getPizza().getId();
     }
 
-
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id) {
+        // verifico che il borrowing esiste
+        Optional<SpecialOffer> specialOfferToDelete = specialOfferRepository.findById(id);
+        if (specialOfferToDelete.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        // se esiste lo cancello
+        specialOfferRepository.delete(specialOfferToDelete.get());
+        // faccio una redirect alla pagina di dettaglio del libro
+        return "redirect:/papas/" + specialOfferToDelete.get().getPizza().getId();
+    }
 }
+
+
+

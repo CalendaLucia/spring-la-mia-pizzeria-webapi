@@ -18,44 +18,45 @@
         </div>
     </div>
 </div>
-<!--LISTA DELLE OFFERTE-->
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">Special Offers</th>
-        <th scope="col">Start date</th>
-        <th scope="col">End Date</th>
-        <th scope="col">Action</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <th scope="row">1</th>
-        <td>Inizio off</td>
-        <td>fine off</td>
-        <td>icons</td>
-    </tr>
-    <tr>
-        <th scope="row">2</th>
-        <td>Inizio off</td>
-        <td>fine off</td>
-        <td>icons</td>
-    </tr>
-    <tr>
-        <th scope="row">3</th>
-        <td>Inizio off</td>
-        <td>fine off</td>
-        <td>icons</td>
-    </tr>
-    </tbody>
-</table>
+
+<!-- Aggiungi questo codice dopo il div del bottone "Add a new Special Offer" -->
+
+<div class="container">
+    <h3>Special Offers</h3>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="specialOffer : ${pizza.specialOffers}">
+            <td th:text="${specialOffer.title}"></td>
+            <td th:text="${#temporals.format(specialOffer.startDate, 'dd/MM/yyyy')}"></td>
+            <td th:text="${#temporals.format(specialOffer.endDate, 'dd/MM/yyyy')}"></td>
+            <td>
+                <a th:href="@{/offers/edit/{id}(id=${specialOffer.id})}" class="btn btn-link">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <form class="d-inline" th:action="@{|/offers/delete/${specialOffer.id}|}" method="post">
+                    <button class="btn btn-link" type="submit">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
 
 <!--bottone crea nuova offerta speciale-->
 <div class="container">
-    <a th:href="@{/offers/create(pizzaOfferId=${pizza.id})}" class="btn btn-outline-danger m-5">Add a new Special
+    <a th:href="@{/offers/create(pizzaId=${pizza.id})}" class="btn btn-outline-danger m-5">Add a new Special
         Offer</a>
-  
-
     <th:block th:replace="fragments/fragments :: return-home"></th:block>
 </div>
 

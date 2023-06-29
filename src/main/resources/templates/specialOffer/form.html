@@ -8,13 +8,17 @@
 <body>
 
 <div class="container w-75">
-    <h2 th:text="${specialOffer.id == null ? 'Add a new offer' : 'Edit offer'}" class="text-danger p-2"></h2>
+    <h2 th:text="${specialOffer.id != null ? 'Add a new offer' : 'Edit offer'}" class="text-danger p-2"></h2>
 </div>
 
 <div class="container w-75">
-    <form th:action="@{${specialOffer.id == null ? '/offers/create' : '/offers/edit/' + specialOffer.id}}" method="post"
+    <form th:action="@{${specialOffer.id != null ? '/offers/edit/' + specialOffer.id : '/offers/create' }}"
+          method="post"
           th:object="${specialOffer}" id="offers-form" class="row">
-        <input type="hidden" th:field="*{pizzaOfferId}"/>
+
+        <!-- Campo nascosto per l'ID della pizza -->
+        <input type="hidden" th:field="*{pizza.id}"/>
+
 
         <div class="col-6">
             <label class="form-label" for="title">Name</label>
@@ -53,7 +57,7 @@
 
         <div class="col-12 mt-3">
             <button class="btn btn-primary" type="submit">Save</button>
-            <a class="btn btn-primary" th:href="@{|/papas/${specialOffer.pizzaOffer.id}|}">Cancel</a>
+            <a class="btn btn-primary" th:href="@{|/papas/${specialOffer.pizza.id}|}">Cancel</a>
 
         </div>
     </form>
