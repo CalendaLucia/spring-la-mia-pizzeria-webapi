@@ -1,13 +1,12 @@
 package com.learning.java.crud.springLaMiaPizzeria.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity                         //con @entity sto dicendo che questa classe è una tabella
 @Table(name = "pizzas")        //con @table sto dando il nome al plurale alla tabella
@@ -28,11 +27,15 @@ public class Pizza {
     private String photo;
 
 
+    @NotNull(message = "Price is required")
     @Positive(message = "Price must be a positive number.")
     @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than 0.")
     private BigDecimal price;
 
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "pizzaOffer", cascade = {CascadeType.REMOVE})
+    private List<SpecialOffer> specialOffers = new ArrayList<>();
 
     public Pizza() {    //costruttore vuoto
     }

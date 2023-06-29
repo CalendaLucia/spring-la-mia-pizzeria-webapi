@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{/fragments/fragments :: head}"
+      th:with="pageTitle=${specialOffer.id == null ? 'Add a new offer' : 'Edit offer'}">
+    <title th:text="${pageTitle}"></title>
+</head>
+
+<body>
+
+<div class="container w-75">
+    <h2 th:text="${specialOffer.id == null ? 'Add a new offer' : 'Edit offer'}" class="text-danger p-2"></h2>
+</div>
+
+<div class="container w-75">
+    <form th:action="@{${specialOffer.id == null ? '/offers/create' : '/offers/edit/' + specialOffer.id}}" method="post"
+          th:object="${specialOffer}" id="offers-form" class="row">
+        <input type="hidden" th:field="*{pizzaOfferId}"/>
+
+        <div class="col-6">
+            <label class="form-label" for="title">Name</label>
+            <input class="form-control" type="text" id="title" th:field="*{title}"
+                   th:classappend="${#fields.hasErrors('title')} ? 'is-invalid' : ''">
+            <div class="form-text">title must not be blank</div>
+            <div th:if="${#fields.hasErrors('title')}" class="invalid-feedback">
+                <ul>
+                    <li th:each="err : ${#fields.errors('title')}" th:text="${err}"></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-6">
+            <label class="form-label" for="start-date">Start Date</label>
+            <input class="form-control" type="date" id="start-date" th:field="*{startDate}"
+                   th:classappend="${#fields.hasErrors('startDate')} ? 'is-invalid' : ''">
+            <div class="form-text">Start date is required.</div>
+            <div th:if="${#fields.hasErrors('startDate')}" class="invalid-feedback">
+                <ul>
+                    <li th:each="err : ${#fields.errors('startDate')}" th:text="${err}"></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-6">
+            <label class="form-label" for="end-date">End Date</label>
+            <input class="form-control" type="date" id="end-date" th:field="*{endDate}"
+                   th:classappend="${#fields.hasErrors('endDate')} ? 'is-invalid' : ''">
+            <div class="form-text">End date is required.</div>
+            <div th:if="${#fields.hasErrors('endDate')}" class="invalid-feedback">
+                <ul>
+                    <li th:each="err : ${#fields.errors('endDate')}" th:text="${err}"></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-12 mt-3">
+            <button class="btn btn-primary" type="submit">Save</button>
+            <a class="btn btn-primary" th:href="@{|/papas/${specialOffer.pizzaOffer.id}|}">Cancel</a>
+
+        </div>
+    </form>
+</div>
+
+
+</body>
+</html>

@@ -142,7 +142,7 @@ public class PizzaController {
     }
 
 
-    //METODO per selezionare l oggetto da database o tirare un eccezione
+    //METODO per selezionare l oggetto da database e tirare un eccezione
     private Pizza getPizzaById(Integer id) {
         Optional<Pizza> result = pizzaRepository.findById(id);
         if (result.isEmpty()) {

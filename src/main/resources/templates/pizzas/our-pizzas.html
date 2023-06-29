@@ -14,7 +14,11 @@
         <p th:text="${message}"></p>
     </div>
 
-
+    <div th:if="${message != null}" class="alert alert-dismissible fade show"
+         th:classAppend="${#strings.equalsIgnoreCase(message.type, 'SUCCESS')} ? 'alert-success' : 'alert-danger'">
+        <div th:text="${message.message}"></div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 </div>
 
 
@@ -42,10 +46,10 @@
             </button>
         </div>
 
-        <div class="carousel-inner position-relative z-1 w-100 h-50 bg-warning">
+        <div class="carousel-inner position-relative z-1 w-100 bg-warning">
 
             <!--Qui parte il codice che si ripete-->
-            <div th:each="pizza, current : ${pizzas}" class="carousel-item w-100 h-50"
+            <div th:each="pizza, current : ${pizzas}" class="carousel-item w-100"
                  th:classappend="${current.index == 0} ? 'active'">
                 <!-- La condizione "current.index == 0" verifica se l'elemento corrente è il primo dell'iterazione. Index è una varibile di stato -->
                 <img th:src="${pizza.photo}" class="d-block p-4 img-fluid" alt="pizza" style="object-fit: cover;">
@@ -62,7 +66,7 @@
                          </a>
                     </span>
 
-                    <form th:action="@{|/papas/delete/${pizza.id}|}" method="post">
+                    <form class="d-inline" th:action="@{|/papas/delete/${pizza.id}|}" method="post">
                         <button class="btn " type="submit">
                             <i class="fa-solid fa-trash-can text-white h3 p-2"></i>
                         </button>
