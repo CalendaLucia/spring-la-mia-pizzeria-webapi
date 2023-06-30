@@ -1,5 +1,7 @@
 package com.learning.java.crud.springLaMiaPizzeria.controller;
 
+import com.learning.java.crud.springLaMiaPizzeria.messages.AlertMessage;
+import com.learning.java.crud.springLaMiaPizzeria.messages.AlertMessageType;
 import com.learning.java.crud.springLaMiaPizzeria.model.Pizza;
 import com.learning.java.crud.springLaMiaPizzeria.model.SpecialOffer;
 import com.learning.java.crud.springLaMiaPizzeria.repository.PizzaRepository;
@@ -12,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -64,7 +67,13 @@ public class SpecialOfferController {
 
     @PostMapping("/edit/{id}")
     public String doEdit(@PathVariable Integer id,
-                         @Valid @ModelAttribute("specialOffer") SpecialOffer formSpecialOffer, BindingResult bindingResult) {
+                         @Valid @ModelAttribute("specialOffer") SpecialOffer formSpecialOffer, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute
+                    ("message", new AlertMessage(AlertMessageType.ERROR,
+                            "Sorry, but we couldn't apply the modification"));
+            return "redirect:/edit/{id}";
+        }
         Optional<SpecialOffer> specialOfferToEdit = specialOfferRepository.findById(id);
         if (specialOfferToEdit.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);

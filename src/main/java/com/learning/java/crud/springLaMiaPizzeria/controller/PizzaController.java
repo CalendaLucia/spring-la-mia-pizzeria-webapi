@@ -30,6 +30,7 @@ public class PizzaController {
     public String index(
             @RequestParam(name = "keyword", required = false) String search,
             Model model) {
+
         List<Pizza> pizzas;
         if (search == null || search.isBlank()) {
             // se non ho il parametro search faccio la query generica
@@ -54,6 +55,7 @@ public class PizzaController {
         Optional<Pizza> result = pizzaRepository.findById(pizzaId);
         if (result.isPresent()) {
             model.addAttribute("pizza", result.get());
+
             return "pizzas/details";
         } else {
             //ritorno un HTTP Status 404 Not Found
