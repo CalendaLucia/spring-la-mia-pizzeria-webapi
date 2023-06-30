@@ -1,14 +1,14 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:insert="~{/fragments/fragments :: head}"
-      th:with="pageTitle=${specialOffer.id == null ? 'Add a new offer' : 'Edit offer'}">
+      th:with="pageTitle=${specialOffer.id != null ? 'Add a new offer' : 'Edit offer'}">
     <title th:text="${pageTitle}"></title>
 </head>
 
 <body>
 
 <div class="container w-75">
-    <h2 th:text="${specialOffer.id != null ? 'Add a new offer' : 'Edit offer'}" class="text-danger p-2"></h2>
+    <h2 th:text="${specialOffer.id != null ? 'Edit offer' : 'Add a new offer'}" class="text-danger p-2"></h2>
 </div>
 
 <div class="container w-75">
