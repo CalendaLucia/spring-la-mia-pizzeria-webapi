@@ -21,7 +21,7 @@
 
 <!-- Aggiungi questo codice dopo il div del bottone "Add a new Special Offer" -->
 
-<div class="container p-5">
+<div class="container p-5" th:if="${specialOffer != null}">
     <h3 class="pb-3">Special Offers</h3>
     <table class="table mt-4">
         <thead>
@@ -50,6 +50,9 @@
         </tr>
         </tbody>
     </table>
+</div>
+<div class="alert alert-info" th:unless="${specialOffer != null}">
+    There are no Special Offer
 </div>
 
 

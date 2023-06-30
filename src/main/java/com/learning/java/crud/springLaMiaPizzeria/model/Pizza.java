@@ -34,8 +34,21 @@ public class Pizza {
 
     private LocalDateTime createdAt;
 
+    //relazione uno a molti con offerte speciali
     @OneToMany(mappedBy = "pizza", cascade = {CascadeType.REMOVE})
     private List<SpecialOffer> specialOffers = new ArrayList<>();
+
+    //relazione molti a molti con ingredienti
+    @ManyToMany
+    private List<Ingredient> ingredients;
+
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
 
     public Pizza() {    //costruttore vuoto
     }

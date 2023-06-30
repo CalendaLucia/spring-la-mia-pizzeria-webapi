@@ -38,7 +38,13 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/papas/create}"
-                       th:classappend="${current== 'create' ? 'active' : ''}">Add a new Pizza</a>
+                       th:classappend="${current== 'create' ? 'active' : ''}">Add a new Pizza
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/ingredients}"
+                       th:classappend="${current== 'ingredients' ? 'active' : ''}">Ingredients
+                    </a>
                 </li>
 
             </ul>

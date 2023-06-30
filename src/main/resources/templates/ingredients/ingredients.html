@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="~{/fragments/fragments :: head(pageTitle='Ingredients')}"></head>
+<body>
+
+<nav th:replace="~{/fragments/fragments :: navbar(current='ingredients')}"></nav>
+
+<h2>Pagina degli ingredienti</h2>
+
+<div class="form-check" th:each="ingredient : ${ingredients}">
+    <input class="form-check-input" type="checkbox" value="" th:id="'flexCheckDefault_' + ${ingredient.id}">
+    <label class="form-check-label" th:for="'flexCheckDefault_' + ${ingredient.id}"
+           th:text="${ingredient.name}"></label>
+</div>
+
+
+</body>
+</html>
