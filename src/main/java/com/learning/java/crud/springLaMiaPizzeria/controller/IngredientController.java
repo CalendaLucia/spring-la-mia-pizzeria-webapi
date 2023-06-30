@@ -1,14 +1,17 @@
 package com.learning.java.crud.springLaMiaPizzeria.controller;
 
 import com.learning.java.crud.springLaMiaPizzeria.model.Ingredient;
+import com.learning.java.crud.springLaMiaPizzeria.model.Pizza;
 import com.learning.java.crud.springLaMiaPizzeria.repository.IngredientRepository;
 import com.learning.java.crud.springLaMiaPizzeria.repository.PizzaRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -64,6 +67,23 @@ public class IngredientController {
         ingredientRepository.save(formIngredient);
 
 
+        return "redirect:/ingredients";
+    }
+
+    //Controller per eliminazione ingredienti
+
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id) {
+
+        Optional<Ingredient> result = ingredientRepository.findById(id);
+        if (result.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        Ingredient ingredientToDelete = result.get();
+        for (Pizza pizza : ingredientToDelete.getPizzas()) {
+            pizza.getIngredients().remove(ingredientToDelete);
+        }
+        ingredientRepository.deleteById(id);
         return "redirect:/ingredients";
     }
 }

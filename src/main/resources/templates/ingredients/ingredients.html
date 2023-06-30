@@ -11,11 +11,17 @@
 <div class="container d-flex justify-content-between">
     <div class="row">
         <div class="col-12 ">
-            <div class="form-check p-1" th:each="ingredient : ${ingredients}">
+            <div class="form-check p-1" th:each="ingredient : ${ingredients}" th:object="${ingredient}">
                 <input class="form-check-input" type="checkbox" value="" th:id="'flexCheckDefault_' + ${ingredient.id}">
                 <label class="form-check-label" th:for="'flexCheckDefault_' + ${ingredient.id}"
-                       th:text="${ingredient.name}"></label>
+                       th:text="*{name}"></label>
+                <form class="d-inline" th:action="@{|/ingredients/delete/*{id}|}" method="post">
+                    <button class="btn " type="submit">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </form>
             </div>
+
         </div>
     </div>
 
