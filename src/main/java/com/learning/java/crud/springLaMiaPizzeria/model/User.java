@@ -17,15 +17,16 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
-    @ManyToMany
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
     public Integer getId() {
