@@ -6,7 +6,7 @@
 
 <nav th:replace="~{/fragments/fragments :: navbar(current='ingredients')}"></nav>
 
-<h2 class="m-3">Pagina degli ingredienti</h2>
+<h2 class="m-3">Add new Ingredients</h2>
 
 <div class="container ">
     <div class="row ">
@@ -59,13 +59,12 @@
                         <button type="submit" class="btn btn-primary mb-2">Save</button>
                         <button type="reset" class="btn btn-primary">Reset</button>
                     </div>
-          
                 </form>
+
             </div>
-
-
         </div>
     </div>
+    <th:block th:replace="fragments/fragments :: return-home"></th:block>
 </div>
 
 
