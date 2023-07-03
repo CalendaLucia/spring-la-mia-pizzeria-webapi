@@ -15,7 +15,7 @@ public class Ingredient {
     @NotNull
     private String name;
 
-    @ManyToMany(mappedBy = "ingredients")
+    @ManyToMany(mappedBy = "ingredients") //FORNIAMO IL NOME DEL CAMPO CHE MAPPA LA RELAZIONE CON PIZZA
     private List<Pizza> pizzas;
 
     public Integer getId() {

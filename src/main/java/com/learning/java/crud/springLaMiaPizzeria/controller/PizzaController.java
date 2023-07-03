@@ -2,7 +2,9 @@ package com.learning.java.crud.springLaMiaPizzeria.controller;
 
 import com.learning.java.crud.springLaMiaPizzeria.messages.AlertMessage;
 import com.learning.java.crud.springLaMiaPizzeria.messages.AlertMessageType;
+import com.learning.java.crud.springLaMiaPizzeria.model.Ingredient;
 import com.learning.java.crud.springLaMiaPizzeria.model.Pizza;
+import com.learning.java.crud.springLaMiaPizzeria.repository.IngredientRepository;
 import com.learning.java.crud.springLaMiaPizzeria.repository.PizzaRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class PizzaController {
     //dipende da PizzaRepository
     @Autowired
     private PizzaRepository pizzaRepository;
+
+    @Autowired
+    private IngredientRepository ingredientRepository;
 
     @GetMapping
     public String index(
@@ -50,11 +55,19 @@ public class PizzaController {
 
     //metodo per ricerca singolo ID
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") Integer pizzaId, Model model) {
+    public String show(@PathVariable("id") String pizzaId,
+                       Model model) {
+        Integer id = Integer.parseInt(pizzaId);
         //cerco su database i dettagli della pizza con quell'ID
-        Optional<Pizza> result = pizzaRepository.findById(pizzaId);
+        Optional<Pizza> result = pizzaRepository.findById(id);
         if (result.isPresent()) {
-            model.addAttribute("pizza", result.get());
+            Pizza pizza = result.get();
+
+            List<Ingredient> ingredients = pizza.getIngredients();
+
+
+            model.addAttribute("pizza", pizza);
+            model.addAttribute("ingredients", ingredients);
 
             return "pizzas/details";
         } else {
@@ -71,6 +84,7 @@ public class PizzaController {
     public String create(Model model) {
         //aggiungo al model l'attributo pizza contenente una Pizza vuota
         model.addAttribute("pizza", new Pizza());
+        model.addAttribute("ingredients", ingredientRepository.findAll());
         return "pizzas/create"; //template con form di creazione pizza
     }
 
@@ -79,18 +93,21 @@ public class PizzaController {
     @PostMapping("/create")
     public String store(
             @Valid @ModelAttribute("pizza") Pizza formPizza,
-            BindingResult bindingResult,
-            Model model) {
-        //i dati della pizza sono in formPizza
-
+            @RequestParam("selectedIngredientIds") List<Integer> ingredientIds,
+            BindingResult bindingResult
+    ) {
         //verifico se ci sono stati degli errori
         if (bindingResult.hasErrors()) {
             //se ci sono stati errori allora
             return "pizzas/create"; //ritorno il tamplate del form ma con la pizza precaricata
         }
-
         //gestisco il timestamp di creazione
         formPizza.setCreatedAt(LocalDateTime.now());
+
+        // Recupero gli ingredienti selezionati dal repository degli ingredienti usando gli ID
+        List<Ingredient> selectedIngredients = ingredientRepository.findAllById(ingredientIds);
+        // Imposto gli ingredienti selezionati sulla pizza
+        formPizza.setIngredients(selectedIngredients);
 
         pizzaRepository.save(formPizza); //il metodo save fa una create sql se l'oggetto con quella PK non esiste, altrimenti fa update
 

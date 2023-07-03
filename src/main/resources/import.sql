@@ -9,3 +9,9 @@ INSERT INTO `pizzas`(`price`, `created_at`, `description`, `name`, `photo`)VALUE
 INSERT INTO `pizzas`(`price`, `created_at`, `description`, `name`, `photo`)VALUES (8.50, '2023-06-22 15:28', 'Spicy pizza with jalapenos, chicken, and barbecue sauce', 'Spicy BBQ Chicken Pizza', 'https://www.italianfoodforever.com/wp-content/uploads/2009/10/blceleryporcinipizza.jpg');
 
 INSERT INTO `pizzas`(`price`, `created_at`, `description`, `name`, `photo`)VALUES (9.00, '2023-06-22 15:28', 'Gourmet pizza with prosciutto, arugula, and Parmesan shavings',  'Prosciutto Arugula Pizza', 'https://www.oliveandmango.com/images/uploads/2021_08_fig_prosciutto_di_parma_PDO_Gorgonzola_and_arugula_pizza_with_hot_honey_1.jpg');
+
+INSERT INTO `ingredients`(`name`) VALUES ('pomodoro');
+INSERT INTO `ingredients`(`name`) VALUES ('mozzarella');
+INSERT INTO `ingredients`(`name`) VALUES ('pepperoni');
+INSERT INTO `ingredients`(`name`) VALUES ('fresh basil');
+INSERT INTO `ingredients`(`name`) VALUES ('gorgonzola cheese');

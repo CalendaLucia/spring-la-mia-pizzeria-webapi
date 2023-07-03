@@ -40,6 +40,10 @@ public class Pizza {
 
     //relazione molti a molti con ingredienti
     @ManyToMany
+    @JoinTable(
+            name = "PIZZAS_INGREDIENTS",  //FORNIAMO IL NOME DELLA TABELLA DI JOIN OVVERO LA TABELLA PONTE TRA PIZZA E INGREDIENTI
+            joinColumns = @JoinColumn(name = "pizza_id"), //FORNIAMO CHIAVE ESTERNA CHE SI COLLEGA AL LATO PROPRIETARIO DELLA RELAZIONE
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id")) //SI COLLEGA AL LATO INGREDIENTI
     private List<Ingredient> ingredients;
 
     public List<Ingredient> getIngredients() {

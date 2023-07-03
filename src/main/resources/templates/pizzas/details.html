@@ -13,8 +13,16 @@
         <img th:src="*{photo}" class="card-img-top">
         <div class="card-body">
             <p th:text="*{name}" class="card-text"></p>
-            <p th:text="*{'Ingredients: ' + description}" class="card-text"></p>
+            <p th:text="*{'Description: ' + description}" class="card-text"></p>
             <p th:text="*{'Price: ' + price + ' €'}" class="card-text"></p>
+            <h5>Ingredients:</h5>
+            <ul>
+                <li th:each="ingredient : ${ingredients}" th:object="${ingredient}" th:text="*{name}">
+
+                </li>
+            </ul>
+
+
         </div>
     </div>
 </div>
