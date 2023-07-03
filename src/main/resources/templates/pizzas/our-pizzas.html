@@ -1,10 +1,13 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head th:insert="~{/fragments/fragments :: head(pageTitle='Our pizzas')}"></head>
 <body>
 
 <nav th:replace="~{/fragments/fragments :: navbar(current='our-pizzas')}"></nav>
+
 
 <!-- MESSAGGIO DI ERRORE IN CASO DI INSUCCESSO o successo -->
 <div class="container w-50">
@@ -60,13 +63,16 @@
                             <i class="fa-solid fa-pizza-slice text-white h3 p-2"></i>
                          </a>
                     </span>
+
                     <span>
-                         <a th:href="@{|/papas/edit/${pizza.id}|}">
+                         <a th:href="@{|/papas/edit/${pizza.id}|}"
+                            sec:authorize="hasAuthority('ADMIN')">
                              <i class="fa-regular fa-pen-to-square text-white h3 p-2"></i>
                          </a>
                     </span>
 
-                    <form class="d-inline" th:action="@{|/papas/delete/${pizza.id}|}" method="post">
+                    <form class="d-inline" th:action="@{|/papas/delete/${pizza.id}|}"
+                          sec:authorize="hasAuthority('ADMIN')" method="post">
                         <button class="btn " type="submit">
                             <i class="fa-solid fa-trash-can text-white h3 p-2"></i>
                         </button>

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <!-- fragment che si chiama head e prende un parametro title -->
     <th:block th:fragment="head(pageTitle)">
@@ -38,14 +38,27 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/papas/create}"
-                       th:classappend="${current== 'create' ? 'active' : ''}">Add a new Pizza
+                       th:classappend="${current== 'create' ? 'active' : ''}" sec:authorize="hasAuthority('ADMIN')">Add
+                        a new Pizza
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/ingredients}"
-                       th:classappend="${current== 'ingredients' ? 'active' : ''}">Ingredients
+                       th:classappend="${current== 'ingredients' ? 'active' : ''}"
+                       sec:authorize="hasAuthority('ADMIN')">Add Ingredients
                     </a>
                 </li>
+
+                <ul>
+                    <li>
+                        Logged user: <span th:text="${username}"></span>
+                    </li>
+                    <li>
+                        Roles: <span sec:authentication="principal.authorities"></span>
+                    </li>
+
+                </ul>
+
 
             </ul>
         </div>
@@ -60,6 +73,7 @@
                     </button>
                 </div>
             </form>
+
         </div>
 
     </div>

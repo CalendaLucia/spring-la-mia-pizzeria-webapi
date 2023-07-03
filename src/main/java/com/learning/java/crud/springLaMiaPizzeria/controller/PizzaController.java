@@ -9,6 +9,7 @@ import com.learning.java.crud.springLaMiaPizzeria.repository.PizzaRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,6 +35,7 @@ public class PizzaController {
     @GetMapping
     public String index(
             @RequestParam(name = "keyword", required = false) String search,
+            Authentication authentication,
             Model model) {
 
         List<Pizza> pizzas;
@@ -47,9 +49,15 @@ public class PizzaController {
         if (pizzas.isEmpty()) {
             model.addAttribute("message", "Non ci sono pizze nel nostro catalogo");
         }
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            String username = authentication.getName();
+            model.addAttribute("username", username);
+        }
         // passo la lista delle pizze alla view
         model.addAttribute("pizzas", pizzas);
         model.addAttribute("searchInput", search == null ? "" : search);
+
         return "pizzas/our-pizzas";
     }
 
