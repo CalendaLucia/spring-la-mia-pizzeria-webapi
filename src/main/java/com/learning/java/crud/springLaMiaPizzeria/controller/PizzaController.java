@@ -121,6 +121,7 @@ public class PizzaController {
 
         Pizza pizza = getPizzaById(id);
         model.addAttribute("pizza", pizza);
+        model.addAttribute("ingredients", ingredientRepository.findAll());
 
         return "/pizzas/create";
     }
@@ -128,6 +129,7 @@ public class PizzaController {
     //UPDATE Controller che gestisce la post delle modifiche nel form
     @PostMapping("/edit/{id}")
     public String update(@PathVariable Integer id,
+                         @RequestParam("selectedIngredientIds") List<Integer> ingredientIds,
                          @Valid @ModelAttribute("pizza") Pizza formPizza,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
@@ -144,6 +146,11 @@ public class PizzaController {
         //salvo i valori iniziali di creazione per non perderli nella nuova modifica
         formPizza.setId(pizzaToEdit.getId());
         formPizza.setCreatedAt(pizzaToEdit.getCreatedAt());
+
+        // Recupero gli ingredienti selezionati dal repository degli ingredienti usando gli ID
+        List<Ingredient> selectedIngredients = ingredientRepository.findAllById(ingredientIds);
+        // Imposto gli ingredienti selezionati sulla pizza
+        formPizza.setIngredients(selectedIngredients);
         pizzaRepository.save(formPizza);
         //mando una conferma di successo
         redirectAttributes.addFlashAttribute("message", new AlertMessage(AlertMessageType.SUCCESS, "Pizza updated!"));
