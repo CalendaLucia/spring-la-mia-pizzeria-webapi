@@ -1,5 +1,6 @@
 package com.learning.java.crud.springLaMiaPizzeria.api;
 
+import com.learning.java.crud.springLaMiaPizzeria.model.Ingredient;
 import com.learning.java.crud.springLaMiaPizzeria.model.Pizza;
 import com.learning.java.crud.springLaMiaPizzeria.repository.PizzaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,10 @@ public class PizzaRestController {
     public ResponseEntity<Pizza> getPizza(@PathVariable Integer pizzaId) {
         Optional<Pizza> result = pizzaRepository.findById(pizzaId);
         if (result.isPresent()) {
-            return ResponseEntity.ok(result.get());
+            Pizza pizza = result.get();
+            List<Ingredient> ingredients = pizza.getIngredients();
+            pizza.setIngredients(ingredients);
+            return ResponseEntity.ok(pizza);
 
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
