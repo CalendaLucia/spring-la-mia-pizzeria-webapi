@@ -50,11 +50,17 @@ public class SecurityConfiguration {
                 .requestMatchers("papas/edit/{id}").hasAuthority("ADMIN")
                 .requestMatchers("papas/delete/{id}").hasAuthority("ADMIN")
                 .requestMatchers("offers/delete/{id}").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.POST).hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/papas/**").hasAuthority("ADMIN")
                 .requestMatchers("papas/{id}").permitAll()
                 .requestMatchers("/**").permitAll()
                 .and().formLogin()
-                .and().logout();
+                .loginPage("/login")
+                .failureUrl("/login-error")
+                .and().logout()
+                .logoutSuccessUrl("/papas");
+
+        //disabilitiamo csfr per poter invocare le api da Postamn
+        http.csrf().disable();
         return http.build();
 
     }
