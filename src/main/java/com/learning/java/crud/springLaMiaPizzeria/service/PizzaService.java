@@ -57,6 +57,25 @@ public class PizzaService {
         return create(pizza); //salvo la pizza
     }
 
+    // metodo per creare un BookForm a partire dall'id di un Book salvato su db
+    public PizzaDto getPizzaFormById(Integer id) throws ResponseStatusException {
+        Pizza pizza = getById(id);
+        return mapPizzaToFormPizza(pizza);
+    }
+
+    public Pizza update(PizzaDto formPizza) {
+        Pizza pizza = mapFormPizzaToPizza(formPizza);
+        Pizza pizzaDb = getById(pizza.getId());
+
+        pizzaDb.setName(pizza.getName());
+        pizzaDb.setDescription(pizza.getDescription());
+        pizzaDb.setPrice(pizza.getPrice());
+        pizzaDb.setPhoto(pizza.getPhoto());
+        pizzaDb.setIngredients(pizza.getIngredients());
+
+        return pizzaRepository.save(pizzaDb);
+    }
+
     private Pizza mapFormPizzaToPizza(PizzaDto formPizza) {
         //creo una nuova pizza vuota
         Pizza pizza = new Pizza();
@@ -67,11 +86,23 @@ public class PizzaService {
         pizza.setPrice(formPizza.getPrice());
         pizza.setIngredients(formPizza.getIngredients());
         //converto il campo cover
-       
+
         pizza.setPhoto(multipartFileToByteArray(formPizza.getCoverFile()));
 
 
         return pizza;
+    }
+
+    private PizzaDto mapPizzaToFormPizza(Pizza pizza) {
+        PizzaDto formPizza = new PizzaDto();
+        formPizza.setId(pizza.getId());
+        formPizza.setName(pizza.getName());
+        formPizza.setDescription(pizza.getDescription());
+        formPizza.setPrice(pizza.getPrice());
+        formPizza.setIngredients(pizza.getIngredients());
+
+        return formPizza;
+
     }
 
 

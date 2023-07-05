@@ -123,43 +123,48 @@ public class PizzaController {
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Integer id, Model model) {
 
-        Pizza pizza = getPizzaById(id);
-        model.addAttribute("pizza", pizza);
-        model.addAttribute("ingredients", ingredientRepository.findAll());
+        try {
+            //recupero i dati di quella pizza da database
+            PizzaDto formPizza = pizzaService.getPizzaFormById(id);
+            //aggiungo la pizza al model
+            model.addAttribute("pizza", formPizza);
+            //aggiungo la lista degli ingredienti al model
+            model.addAttribute("ingredients", ingredientRepository.findAll());
+            return "/pizzas/create";
+        } catch (ResponseStatusException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
 
-        return "/pizzas/create";
     }
 
     //UPDATE Controller che gestisce la post delle modifiche nel form
     @PostMapping("/edit/{id}")
     public String update(@PathVariable Integer id,
                          @RequestParam("selectedIngredientIds") List<Integer> ingredientIds,
-                         @Valid @ModelAttribute("pizza") Pizza formPizza,
+                         @Valid @ModelAttribute("pizza") PizzaDto formPizza,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
-        //cerco la pizza per id richiamando il metodo privato getPizzaById
-        Pizza pizzaToEdit = getPizzaById(id);  //vecchia versione della pizza
-
         if (bindingResult.hasErrors()) {
-            //mando un messaggio di errore
+            // Mando un messaggio di errore
             redirectAttributes.addFlashAttribute("message", new AlertMessage(AlertMessageType.ERROR, "Sorry, but we couldn't apply the modification"));
             return "/pizzas/create";
         }
 
-        //salvo i valori iniziali di creazione per non perderli nella nuova modifica
-        formPizza.setId(pizzaToEdit.getId());
-        formPizza.setCreatedAt(pizzaToEdit.getCreatedAt());
+        try {
+            pizzaService.update(formPizza);
+        } catch (ResponseStatusException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
 
         // Recupero gli ingredienti selezionati dal repository degli ingredienti usando gli ID
         List<Ingredient> selectedIngredients = ingredientRepository.findAllById(ingredientIds);
         // Imposto gli ingredienti selezionati sulla pizza
         formPizza.setIngredients(selectedIngredients);
-        pizzaRepository.save(formPizza);
-        //mando una conferma di successo
+
+        // Mando una conferma di successo
         redirectAttributes.addFlashAttribute("message", new AlertMessage(AlertMessageType.SUCCESS, "Pizza updated!"));
         return "redirect:/papas";
-
     }
 
     //Controller Delete
