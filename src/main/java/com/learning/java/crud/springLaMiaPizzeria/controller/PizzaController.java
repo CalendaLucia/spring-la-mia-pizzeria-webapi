@@ -1,11 +1,13 @@
 package com.learning.java.crud.springLaMiaPizzeria.controller;
 
+import com.learning.java.crud.springLaMiaPizzeria.dto.PizzaDto;
 import com.learning.java.crud.springLaMiaPizzeria.messages.AlertMessage;
 import com.learning.java.crud.springLaMiaPizzeria.messages.AlertMessageType;
 import com.learning.java.crud.springLaMiaPizzeria.model.Ingredient;
 import com.learning.java.crud.springLaMiaPizzeria.model.Pizza;
 import com.learning.java.crud.springLaMiaPizzeria.repository.IngredientRepository;
 import com.learning.java.crud.springLaMiaPizzeria.repository.PizzaRepository;
+import com.learning.java.crud.springLaMiaPizzeria.service.PizzaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,8 +30,11 @@ public class PizzaController {
     @Autowired
     private PizzaRepository pizzaRepository;
 
+
     @Autowired
     private IngredientRepository ingredientRepository;
+    @Autowired
+    private PizzaService pizzaService;  //richiama i metodi in PizzaService
 
     @GetMapping
     public String index(
@@ -63,35 +67,25 @@ public class PizzaController {
 
     //metodo per ricerca singolo ID
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") String pizzaId,
+    public String show(@PathVariable("id") Integer pizzaId,
                        Model model) {
-        Integer id = Integer.parseInt(pizzaId);
-        //cerco su database i dettagli della pizza con quell'ID
-        Optional<Pizza> result = pizzaRepository.findById(id);
-        if (result.isPresent()) {
-            Pizza pizza = result.get();
 
-            List<Ingredient> ingredients = pizza.getIngredients();
+        Pizza pizza = getPizzaById(pizzaId);
 
+        List<Ingredient> ingredients = pizza.getIngredients();
+        model.addAttribute("pizza", pizza);
+        model.addAttribute("ingredients", ingredients);
 
-            model.addAttribute("pizza", pizza);
-            model.addAttribute("ingredients", ingredients);
-
-            return "pizzas/details";
-        } else {
-            //ritorno un HTTP Status 404 Not Found
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pizza" + pizzaId + "not found");
-            //devi fare la pagina di errore in html
-        }
-
+        return "pizzas/details";
     }
+
 
     //Controller che gestisce la creazione del form per l'inserimento di una nuova pizza
 
     @GetMapping("/create")
     public String create(Model model) {
         //aggiungo al model l'attributo pizza contenente una Pizza vuota
-        model.addAttribute("pizza", new Pizza());
+        model.addAttribute("pizza", new PizzaDto());
         model.addAttribute("ingredients", ingredientRepository.findAll());
         return "pizzas/create"; //template con form di creazione pizza
     }
@@ -100,7 +94,7 @@ public class PizzaController {
 
     @PostMapping("/create")
     public String store(
-            @Valid @ModelAttribute("pizza") Pizza formPizza,
+            @Valid @ModelAttribute("pizza") PizzaDto formPizza,
             @RequestParam("selectedIngredientIds") List<Integer> ingredientIds,
             BindingResult bindingResult
     ) {
@@ -109,15 +103,17 @@ public class PizzaController {
             //se ci sono stati errori allora
             return "pizzas/create"; //ritorno il tamplate del form ma con la pizza precaricata
         }
-        //gestisco il timestamp di creazione
-        formPizza.setCreatedAt(LocalDateTime.now());
+
 
         // Recupero gli ingredienti selezionati dal repository degli ingredienti usando gli ID
         List<Ingredient> selectedIngredients = ingredientRepository.findAllById(ingredientIds);
         // Imposto gli ingredienti selezionati sulla pizza
         formPizza.setIngredients(selectedIngredients);
 
-        pizzaRepository.save(formPizza); //il metodo save fa una create sql se l'oggetto con quella PK non esiste, altrimenti fa update
+        // chiedo al PizzaService di salvare su db una pizza a partire da formPizza
+        Pizza createdPizza = pizzaService.create(formPizza);
+
+        ; //il metodo save fa una create sql se l'oggetto con quella PK non esiste, altrimenti fa update
 
         return "redirect:/papas";
     }

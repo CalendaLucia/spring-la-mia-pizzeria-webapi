@@ -14,7 +14,8 @@
 
 <div class="container w-75">
     <form th:action="@{${pizza.id == null ? '/papas/create' : '/papas/edit/' + pizza.id}}" method="post"
-          th:object="${pizza}" id="pizza-form" class="row">
+          th:object="${pizza}" id="pizza-form" class="row"
+          enctype="multipart/form-data">
         <div class="col-6">
             <label class="form-label" for="pizza-name">Name</label>
             <input class="form-control" type="text" id="pizza-name" th:field="*{name}"
@@ -27,13 +28,13 @@
             </div>
         </div>
         <div class="col-6">
-            <label class="form-label" for="photo">Photo</label>
-            <input class="form-control" type="text" id="photo" th:field="*{photo}"
-                   th:classappend="${#fields.hasErrors('photo')} ? 'is-invalid' : ''">
+            <label class="form-label" for="coverFile">Photo</label>
+            <input class="form-control" type="file" id="coverFile" th:field="*{coverFile}"
+                   th:classappend="${#fields.hasErrors('coverFile')} ? 'is-invalid' : ''">
             <div class="form-text">Photo is required.</div>
-            <div th:if="${#fields.hasErrors('photo')}" class="invalid-feedback">
+            <div th:if="${#fields.hasErrors('coverFile')}" class="invalid-feedback">
                 <ul>
-                    <li th:each="err : ${#fields.errors('photo')}" th:text="${err}"></li>
+                    <li th:each="err : ${#fields.errors('coverFile')}" th:text="${err}"></li>
                 </ul>
             </div>
         </div>

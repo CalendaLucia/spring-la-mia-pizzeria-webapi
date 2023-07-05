@@ -10,7 +10,7 @@
 </div>
 <div class="container p-2">
     <div th:object="${pizza}" class="card" style="width: 18rem;">
-        <img th:src="*{photo}" class="card-img-top">
+        <img th:src="@{/files/cover/{id}(id=${pizza.id})}" class="card-img-top">
         <div class="card-body">
             <p th:text="*{name}" class="card-text"></p>
             <p th:text="*{'Description: ' + description}" class="card-text"></p>

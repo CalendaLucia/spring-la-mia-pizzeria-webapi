@@ -55,7 +55,9 @@
             <div th:each="pizza, current : ${pizzas}" class="carousel-item w-100"
                  th:classappend="${current.index == 0} ? 'active'">
                 <!-- La condizione "current.index == 0" verifica se l'elemento corrente è il primo dell'iterazione. Index è una varibile di stato -->
-                <img th:src="${pizza.photo}" class="d-block p-4 img-fluid" alt="pizza" style="object-fit: cover;">
+                <img th:src="@{|files/cover/${pizza.id}|}" class="d-block p-4 img-fluid" alt="pizza"
+                     style="object-fit: cover;">
+
                 <div class="carousel-caption d-none d-md-block">
                     <h3 th:text="${pizza.name}"></h3>
                     <span>

@@ -1,5 +1,6 @@
 package com.learning.java.crud.springLaMiaPizzeria.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -23,8 +24,10 @@ public class Pizza {
     @Column(length = 500) // Imposta la lunghezza massima della colonna a 500 caratteri
     @NotBlank(message = "Description is required. Max lenght = 500")
     private String description;
-    @NotBlank(message = "Photo is required")
-    private String photo;
+    
+    @Lob
+    @Column(length = 16777215)
+    private byte[] photo;
 
 
     @NotNull(message = "Price is required")
@@ -35,6 +38,7 @@ public class Pizza {
     private LocalDateTime createdAt;
 
     //relazione uno a molti con offerte speciali
+    @JsonIgnore
     @OneToMany(mappedBy = "pizza", cascade = {CascadeType.REMOVE})
     private List<SpecialOffer> specialOffers = new ArrayList<>();
 
@@ -83,11 +87,12 @@ public class Pizza {
         this.description = description;
     }
 
-    public String getPhoto() {
+
+    public byte[] getPhoto() {
         return photo;
     }
 
-    public void setPhoto(String photo) {
+    public void setPhoto(byte[] photo) {
         this.photo = photo;
     }
 
